@@ -6,6 +6,7 @@
 %
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage[misc]{ifsym} 
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -21,8 +22,7 @@
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
-\author{Hailin Fu \and Jianguo Li\thanks{Corresponding
-author.} \and Jiemin Chen \and Yong Tang \and Jia Zhu}
+\author{Hailin Fu \and Jianguo Li\textsuperscript{(\Letter)} \and Jiemin Chen \and Yong Tang \and Jia Zhu}
 %
 \authorrunning{H. Fu et al.}
 % First names are abbreviated in the running head.
@@ -34,11 +34,11 @@ author.} \and Jiemin Chen \and Yong Tang \and Jia Zhu}
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-With the rapid ongoing development of information technology, a variety of approaches can be applied in building recommendation systems, some of which have made impressive achievements in many different applications. To predict what a user will choose next given his consumed history is one of the crucial mission in recommendation. Most of traditional recommendation systems rely on much explicit feedback to produce output, but those methods often neglect the sequential relationship between datas. In this paper we propose an approach which is based on a bidirectional recurrent structure to capture the sequential feature of datas to promote the performance of next item recommendation. This is achieved by regarding this recommendation problem to a super multiply classification task. We collect consumed items of user in a sequence with time ascending order, and fit the model with last item as label, the rest items as features. Once trained well, the output layer will export the probabilities of items with given sequence. In the experiments, we compare our approach with several commonly used recommendation methods on a real-world dataset. Experimental results indicate that our sequence-based recommender can performance well for short-term interest prediction on a sparse, large, imbalanced dataset.
+In modern recommendation systems, most methods often neglect the sequential relationship between items. So we propose a methodology named Convolutional Bidirectional Long Short-Term Memory (CBLSTM) network to capture the sequential feature of items. Then we use this methodology to build a sequence-based recommendation to predict what a user will choose next. By collecting consumed items of a user in a sequence with time ascending order, fitting the model with the last item as the label, the rest items as the features, we regard this recommendation assignment as a super multiple classification task. Once trained well, the output layer of our model will export the probabilities of the next items with given sequence. In the experiments, we compare our approach with several commonly used recommendation methods on a real-world dataset. Experimental results indicate that our sequence-based recommender can perform well for short-term interest prediction on a sparse, large, imbalanced dataset.
 
-\keywords{Recommendation systems  \and bidirectional recurrent neural network \and deep learning.}
+\keywords{Recommendation systems \and Social media data mining \and bidirectional recurrent neural network \and convolutional neural network \and deep learning.}
 \end{abstract}
-%
+% 
 %
 %
 \section{Introduction}
@@ -48,7 +48,7 @@ The first is the existence of information overload, if users can easily filter o
 
 With the rapid development of the Internet, in many kinds of fields, especially in shopping and entertainment, the number of products grow exponentially, which makes it difficult to retrieve and find the relevant thinks for users, therefore those users who have those needs are no doubt facing the problem of information overload. The prosperous researches of recommendation systems benefits a lot from the one million prize organized by Netflix\footnote{\url{www.netflix.com}}, a variety of impressive approaches for recommendation systems have been brought up after that competition. The main problems of recommendation systems faced with consist of two parts: ratings predicting and products recommendation. So to predict what a user will choose next is also a crucial task \cite{15}. In many websites and applications, such as online electronic business, news/videos website, music/radio station etc, them need a good service for users to recommend what they will like in future. We find that the sequence of datas implicits many interesting and relevant information, for example in a video website, user who watched "Winter is coming" (S01, E02 of Game of Thrones) will be more likely to watch "The Kingsroad" (S01, E02 of Game of Thrones). Even at the 2011 Recsys conference, Pandora\footnote{\url{www.pandora.com}}'s researchers gave a speech about music recommendation and said they find many users consumed music in sequences. However, to the best of our knowledge, few works use the sequential feature of datas to build recommender.
 
-In the past few years, we have witnessed the tremendous prosperity of deep learning in Neural Language Processing, we noticed that recurrent neural network can capture the sequences of words in sentence. We also attempt  So in this paper we propose a novel recommendation model which uses bidirectional recurrent neural network to capture the sequences of user consumed datas. The main contributions of our work are as follows: 
+In the past few years, we have witnessed the tremendous prosperity of deep learning in Neural Language Processing, we noticed that recurrent neural network can capture the sequences of words in sentence. We also attempt  so in this paper we propose a novel recommendation model which uses bidirectional recurrent neural network to capture the sequences of user consumed datas. The main contributions of our work are as follows: 
  \begin{itemize}
 \item This paper firstly introduce Convolutional bidirectional Long Short-Term Memory(CbLSTM) network to the domain of Recommendation System. 
 \item We propose a novel Sequence-based recommendation framework with deep neural network, which can capture the sequential features of datas, as well scales linearly with the number of objectives (both of users and items).
@@ -157,7 +157,7 @@ In order to verify our approach is feasible, we perform experiments on a real-wo
 
 \subsection{Evaluation and Metrics}
 
-As a recommendation model, we will recommend top N item(s) for each user, denoted as $\hat{I}_{u}^{t+1}$. We adopt $Precision@N$, $Recall@N$ scores to evaluate our model and baseline models. We can define the measures as follows Eqs. 11, 12:
+As a recommendation model, we will recommend top N item(s) for each user, denoted as $\hat{I}_{u}^{t+1}$. We adopt $Precision@N$, $Recall@N$ scores to evaluate our model and baseline models. We can define the measures as follows Equations. 11, 12:
 
 \begin{equation}
 Precision@N=\frac{\sum_{u}|\hat{I}_{u}^{t+1}\cap I_{u}^{t+1} |}{\left | \mathbb{U} \right |*N}
@@ -171,7 +171,7 @@ In order to get a harmonic average of the precise and recall, the $F1@N$ score w
 \begin{equation}
 F1@N=\frac{2\times Precision@N\times Recall@N}{Precision@N+Recall@N}
 \end{equation}
-\subsection{Training}
+\subsection{Experimental Settings}
 
 We conduct the experiments on a personal computer, the runtime environment of our experiments is: 2.80GHz Inter Core i7 CPU, NVIDIA GeForce GTX 1050 GPU, 8G memory, 256G storage and Windows 10 operating system.
 
@@ -190,7 +190,7 @@ When training deep networks, it is usually helpful to anneal the learning rate o
 Another training tip we use to save training time and avoid overfitting is \textbf{EarlyStopping} \cite{22}, the mechanism behind EarlyStopping is we set a monitor on the loss of validation set, if the loss of validation set doesn't get reduced within three iterations, which indicates networks have been trained over.
 
 The other hyper-parameters like hidden layer size and embedding layer size we use those most common values firstly,
-in order to get best performance on that dataset, we tune hyper-parameters by fixed others and adjusting only one in every training. After several cumbersome tuning, we get the following other hyper-parameters: embedding layer size $|e|$ = 100, recurrent layer size $H$ = 200, convolutional layer size $O$ = 100, batch size as 32 and initial number of epochs as 100.
+in order to get best performance on that dataset, we tune hyper-parameters by fixing others and adjusting only one in every training. After several cumbersome tuning, we get the following other hyper-parameters: embedding layer size $|e|$ = 100, recurrent layer size $H$ = 200, convolutional layer size $O$ = 100, batch size as 32 and initial number of epochs as 100.
 \begin{figure}[htbp]
 \centerline
 {\includegraphics[height=6.2cm]{image/10thousand@6.png}}
@@ -272,69 +272,6 @@ Overall, in this paper, we propose a novel recommendation framework using genera
 
 In future work, we want to use neural network to capture other information not only the sequences of datas, and to generate a more accurate and longer term prediction.
 
-\subsubsection{Sample Heading (Third Level)} Only two levels of
-headings should be numbered. Lower level headings remain unnumbered;
-they are formatted as run-in headings.
-
-\paragraph{Sample Heading (Fourth Level)}
-The contribution should contain no more than four levels of
-headings. Table~\ref{tab1} gives a summary of all heading levels.
-
-\begin{table}
-\caption{Table captions should be placed above the
-tables.}\label{tab1}
-\begin{tabular}{|l|l|l|}
-\hline
-Heading level &  Example & Font size and style\\
-\hline
-Title (centered) &  {\Large\bfseries Lecture Notes} & 14 point, bold\\
-1st-level heading &  {\large\bfseries 1 Introduction} & 12 point, bold\\
-2nd-level heading & {\bfseries 2.1 Printing Area} & 10 point, bold\\
-3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows & 10 point, bold\\
-4th-level heading & {\itshape Lowest Level Heading.} Text follows & 10 point, italic\\
-\hline
-\end{tabular}
-\end{table}
-
-
-\noindent Displayed equations are centered and set on a separate
-line.
-\begin{equation}
-x + y = z
-\end{equation}
-Please try to avoid rasterized images for line-art diagrams and
-schemas. Whenever possible, use vector graphics instead (see
-Fig.~\ref{fig1}).
-
-\begin{figure}
-\includegraphics[width=\textwidth]{fig1.eps}
-\caption{A figure caption is always placed below the illustration.
-Please note that short captions are centered, while long ones are
-justified by the macro package automatically.} \label{fig1}
-\end{figure}
-
-\begin{theorem}
-This is a sample theorem. The run-in heading is set in bold, while
-the following text appears in italics. Definitions, lemmas,
-propositions, and corollaries are styled the same way.
-\end{theorem}
-%
-% the environments 'definition', 'lemma', 'proposition', 'corollary',
-% 'remark', and 'example' are defined in the LLNCS documentclass as well.
-%
-\begin{proof}
-Proofs, examples, and remarks have the initial word in italics,
-while the following text appears in normal font.
-\end{proof}
-For citations of references, we prefer the use of square brackets
-and consecutive numbers. Citations using labels or the author/year
-convention are also acceptable. The following bibliography provides
-a sample reference list with entries for journal
-articles~\cite{ref_article1}, an LNCS chapter~\cite{ref_lncs1}, a
-book~\cite{ref_book1}, proceedings without editors~\cite{ref_proc1},
-and a homepage~\cite{ref_url1}. Multiple citations are grouped
-\cite{ref_article1,ref_lncs1,ref_book1},
-\cite{ref_article1,ref_book1,ref_proc1,ref_url1}.
 %
 % ---- Bibliography ----
 %
