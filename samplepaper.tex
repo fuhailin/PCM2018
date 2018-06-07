@@ -16,9 +16,9 @@
 
 \begin{document}
 %
-\title{Sequence-Based Recommendation with Convolutional Bidirectional LSTM Network}
+\title{Sequence-based Recommendation with Bidirectional LSTM Network}
 %
-\titlerunning{CBLSTM for Sequence-Based Recommendation}
+\titlerunning{Sequence-based Recommendation with Bidirectional LSTM Network}
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
@@ -34,21 +34,22 @@
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-In modern recommendation systems, most methods often neglect the sequential relationship between items. So we propose a methodology named Convolutional Bidirectional Long Short-Term Memory (CBLSTM) network to capture the sequential feature of items. Then we use this methodology to build a sequence-based recommendation to predict what a user will choose next. By collecting consumed items of a user in a sequence with time ascending order, fitting the model with the last item as the label, the rest items as the features, we regard this recommendation assignment as a super multiple classification task. Once trained well, the output layer of our model will export the probabilities of the next items with given sequence. In the experiments, we compare our approach with several commonly used recommendation methods on a real-world dataset. Experimental results indicate that our sequence-based recommender can perform well for short-term interest prediction on a sparse, large, imbalanced dataset.
+In modern recommendation systems, most methods often neglect the sequential relationship between items. So we propose a novel Sequence-based Recommendation model with Bidirectional  Long Short-Term Memory neural network (BiLSTM4Rec) which can capture the sequential feature of items to predict what a user will choose next. By collecting consumed items of a user in a sequence with time ascending order, fitting the model with the last item as the label, the rest items as the features, we regard this recommendation assignment as a super multiple classification task. Once trained well, the output layer of our model will export the probabilities of the next items with given sequence. In the experiments, we compare our approach with several commonly used recommendation methods on a real-world dataset. Experimental results indicate that our sequence-based recommender can perform well for short-term interest prediction on a sparse, large dataset.
 
-\keywords{Recommendation systems \and Social media data mining \and bidirectional recurrent neural network \and convolutional neural network \and deep learning.}
+\keywords{Recommendation system \and Social media data mining \and Sequential prediction\and Bidirectional recurrent reural network \and Deep learning.}
 \end{abstract}
 % 
 %
 %
 \section{Introduction}
 
-The primary assignments of recommendation systems faced with consist of two parts: ratings predicting and products recommendation. So to predict what a user will choose next given his consumed history is one of the crucial mission \cite{15} in recommendation area. In many websites and applications, such as online electronic business, news/videos website, music/radio station, they need an excellent service for users to recommend what they will like in future. Existing recommenders mainly concentrate on finding the neighbor sets for users or items, or leveraging other explicit/implicit information (such as tags, reviews, item contents and user profiles) for neighborhood-aware. However, to the best of our knowledge, few works use the sequential feature of data to build recommender. We find that the sequence of data implicates much exciting and relevant information, for example in a video website, the user who watched "Winter is coming" (S01, E02 of Game of Thrones) will be more likely to watch "The Kingsroad" (S01, E02 of Game of Thrones). Even at the 2011 Recsys conference, Pandora\footnote{\url{www.pandora.com}}'s researchers gave a speech about music recommendation and said they find many users consumed music in sequences.
+The primary assignments of recommendation systems faced with consist of two parts: ratings predicting and products recommendation. So to predict what a user will choose next given his consumed history is one of the crucial mission \cite{Wan2015NextBR} in recommendation area. In many websites and applications, such as online electronic business, news/videos website, music/radio station, they need an excellent service for users to recommend what they will like in future. Existing recommenders mainly concentrate on finding the neighbor sets for users or items, or leveraging other explicit/implicit information (such as tags, reviews, item contents and user profiles) for neighborhood-aware. However, to the best of our knowledge, few works use the sequential feature of data to build recommender. We find that the sequence of data implicates much exciting and relevant information, for example in a video website, the user who watched "Winter is coming" (S01, E02 of Game of Thrones) will be more likely to watch "The Kingsroad" (S01, E02 of Game of Thrones). Even at the 2011 Recsys conference, Pandora\footnote{\url{www.pandora.com}}'s researchers gave a speech about music recommendation and said they found many users consumed music in sequences.
 
 Our work was inspired by the previous study of Siwei Lai et al.[13], where a neural network is proposed to capture the sequence of words in a sentence.  We took a similar approach by considering one item as a word, the catalog of items as a vocabulary, and the historical consumed items of one user as a sentence, to capture the sequence of the user consumed items. The main contributions of our work are as follows:
  \begin{itemize}
-\item This paper firstly introduces Convolutional Bidirectional Long Short-Term Memory(CBLSTM) network to the domain of Recommendation System. 
-\item We propose a novel Sequence-based recommendation framework with deep neural network, which can capture the sequential features of data, as well scales linearly with the number of objectives (both of users and items).
+
+\item We propose a novel Sequence-based Recommendation model with Bidirectional Long Short-Term Memory neural network,  or BiLSTM4Rec for short, which can capture the sequential features of data, as well scales linearly with the number of objectives (both of users and items).
+\item We regard item sequence as a sentence and use an $M\times d$ embedding matrix $E$ to represent $M$ items which reduces memory cost evidently when facing big data.
  \end{itemize}
 
 % The reset of the paper is organized as follows. Related work is discussed briefly in Section 2. In Section 3, we introduce the overall recommendation framework in detail. Section 4 introduces the experiments, we compare our proposed method with the traditional recommendation methods on the same real-world dataset. Finally we conclude this paper in Section 5, and point out some future work.
@@ -56,14 +57,14 @@ Our work was inspired by the previous study of Siwei Lai et al.[13], where a neu
 \section{Related Work}
 \subsection{Traditional methods in recommendation}
 
-There are three main classes of traditional recommendation system. Those are collaborative filtering systems, content-based filtering systems and hybrid recommendation systems \cite{12}. Collaborative filtering \cite{1,2,3,4} systems generate recommendations based on crowd-sourced input. They recommend for users by finding similar user groups, analyzing those similar user ratings for certain item, to generate preference prediction for this user in special products. Collaborative filtering algorithm can be generally classified into Memory-based \cite{1,2} collaborative filtering and Model-based \cite{3,4,5}collaborative filtering. Memory-based collaborative filtering include User-based collaborative filtering \cite{1} which evaluate the similarity between users by different users’ ratings on the item, making recommendations based on the similarity between users and Item-based collaborative filtering \cite{2} which evaluate the similarity between items by the user’s rating on different items, making recommendations based on the similarity between items. Model-based CF algorithm mainly uses the rating information to train corresponding model, and use this model to predict unknown data. These mainly include Bayesian networks \cite{3}, clustering models \cite{4}, Probabilistic Matrix Factorization \cite{5}. Content-based systems \cite{6} generate recommendations for users based on a description of the item and a profile of the user’s preference. Hybrid recommendation systems \cite{7} combine both collaborative and content-based approaches, they help improve recommendations that are derived from sparse datasets.
+There are three main classes of traditional recommendation systems. Those are collaborative filtering systems, content-based filtering systems, and hybrid recommendation systems \cite{Adomavicius2013Toward}. Collaborative filtering can be generally classified into Memory-based \cite{Resnick:1994:GOA:192844.192905,sarwar2001item} collaborative filtering and Model-based \cite{chien1999bayesian,ungar1998clustering,mnih2008probabilistic} collaborative filtering. Memory-based collaborative filtering \cite{Resnick:1994:GOA:192844.192905,sarwar2001item,chien1999bayesian,ungar1998clustering} systems generate recommendations for users by finding similar user or item groups. Model-based collaborative filtering systems , \emph{e.\,g.}, Bayesian networks \cite{chien1999bayesian}, clustering models \cite{ungar1998clustering}, Probabilistic Matrix Factorization \cite{mnih2008probabilistic}, mainly use the rating information to train corresponding model then use this model to predict unknown data. Content-based systems \cite{balabanovic1997fab} generate recommendations for users based on a description of the item and a profile of the user's preference. Hybrid recommendation systems \cite{burke2002hybrid} combine both collaborative and content-based approaches. However, above traditional methods are not suitable for sequential features capturing. Association rules, \emph{e.\,g.}, Apriori \cite{agrawal1993mining} and FP-Growth \cite{li2008pfp}, can be used to mine sequential features, but they suffer from sensitivity to threshold settings, high time and space complexity, missing of minority rules.
 
 \subsection{Deep learning in recommendation}
-Deep learning is able to efficiently capture unstructured data, such as auditory and visual information, and extract more complex abstractions into higher level data representation \cite{20}. Dieleman et al. \cite{8} proposed a content-based recommender system which used CNN to extract audio signal for Spotify Music. Shumpei et al. \cite{9} presented a RNN based news recommender system for Yahoo News. Covington et al. \cite{10} use historical query, demographic and other contextual information as features, presented a deep neural network based recommendation algorithm for video recommendation on YouTube. Hidasi, Balázs, et al. \cite{11} presented a Session-based recommendations with RNN. Wan, Shengxian, et al. \cite{15} also proposed using RNN to build a next basket recommendation. Tang et al. \cite{23} propose Convolutional Sequence Embedding Recommendation Model to personalized top-N sequential recommendation.
+Deep learning can efficiently capture unstructured data, and extract more complex abstractions into higher-level data representation \cite{Zhang2017DeepLB}.  Shumpei et al. \cite{okura2017embedding} presented an RNN based news recommender system for Yahoo News. Covington et al. \cite{covington2016deep} used historical query, demographic and other contextual information as features, presented a deep neural network based recommendation algorithm for video recommendation on YouTube. Hidasi, Balázs, et al. \cite{Hidasi2015Session} presented a Session-based recommendation with an RNN variant, i.e., GRU. Wan, Shengxian, et al. \cite{Wan2015NextBR} also used RNN to build a next basket recommendation. Zhu Y et al. \cite{ijcai2017-504} used a LSTM variant, i.e., Time-LSTM, to model users’ sequential actions. Tang et al. \cite{Tang:2018:PTS:3159652.3159656} propose Convolutional Sequence Embedding Recommendation Model which incorporates the Convolutional Neural Network (CNN) to learn sequential features, and Latent Factor Model (LFM) to learn user specific features to personalized top-N sequential recommendation. Those works show deep neural networks suit recommendation and RNN architectures are good at modeling the sequential order of objects.
 
 \section{Proposed Approach}
 
-Our model consists of four layers: embedding, recurrent structure, pooling layer and output layers. We use this model to capture the sequence feature of the user's consumed data. Figure 1 shows the structure of our sequence-based recommender.
+We propose a novel deep neural model to capture the sequence feature of the user's consumed data. Our model mainly consists of five layers: embedding, recurrent structure, fully-connected layer, pooling layer and output layers. Figure 1 shows the structure of our sequence-based recommender.
 \begin{figure}[htbp]
 \centerline
 {\includegraphics[height=6.2cm,width=\linewidth]{image/structer.png}}
@@ -81,9 +82,10 @@ We consider any item can appear only once in the history of a user. Therefore mo
 e(I_{i})=EI_{i}
 \end{equation}
 where $E\in \mathbb{R}^{|e|\times |M|}$, $|e|$ is the size of the embedding layer, $|M|$ is the number of items in the training set. So $e(I_{i})$ is the embedding of consumed item $I_{i}$, which is a dense vector with $|e|$ real value elements.
+Compared with the One-hot encoder (size of $|M|\times|M|$), our item sequence embedding matrix (size of $|e|\times|M|$) reduces memory cost rapidly when dealing with big data.
 
 \subsection{User Short-term Interest Learning}
-We combine a user consumed item $I_{u}^{t}$ and other items previous and subsequent $I_{u}^{t}$ to present the current interest of user $u$ at time $t$. The behavior sequences help us to indicate a more precise short-term interest of user. In this recommender, we use a recurrent structure, which is a bidirectional recurrent neural network, to capture the short-term interest of the user.
+We combine a user consumed item $I_{u}^{t}$ and other items previous and subsequent $I_{u}^{t}$ to present the current interest of user $u$ at time $t$. The behavior sequences help us to indicate a more precise short-term interest of user. In this recommender, we use a recurrent structure, which is a bidirectional Long Short-Term Memory neural network, to capture the short-term interest of the user.
 
 We define $h_{b}(I_{i})$ as the user's interest before consuming an item $I_{i}$ and $h_{a}(I_{i})$ as the user's interest after consuming an item $I_{i}$. Both $h_{b}(I_{i})$ and $h_{a}(I_{i})$ are dense vectors with $|h|$ real value elements. The interest $h_{b}(I_{i})$ before item $I_{i}$ is calculated using Equation (1). $W^{(b)}$ is a matrix that transforms the hidden layer (interest) into the next hidden layer. $W^{(cb)}$ is a matrix that is used to combine the interest of the current item with the next item's previous interest. $\sigma $ is a non-linear activation function. The interest $h_{a}(I_{i})$ after consuming item $I_{i}$ is calculated in a similar equation. Any user's initial interest uses the same shared parameters $h_{b}(I_{1})$. The subsequent interest of the last item in a user's history share the parameters $h_{a}(I_{n})$.
 \begin{equation}
@@ -94,7 +96,7 @@ h_{a}(I_{i})=\sigma (W^{(a)}h_{a}(I_{i+1})+W^{(ca)}e(I_{i+1}))
 \end{equation}
 where the initial interest $h_{b}(I_{1}),h_{a}(I_{n})\in \mathbb{R}^{|h|}$, $W^{(b)},W^{(a)}\in \mathbb{R}^{|h|\times |h|}$, $W^{(cb)},W^{(ca)}\in \mathbb{R}^{|e|\times |h|}$.
 
-As shown in Equation (2) and (3), the interest vector captures the interest in user's previous and subsequent behavior. We define the temporary status of interest when user taking a behavior $I_{i}$ as the Equation (4) shown. This manner concatenate the previous temporary status of interest $h_{b}(I_{i})$ before user consuming item $I_{i}$, the embedding of behavior $I_{i}$ consumed item $e(I_{i})$, and the subsequent temporary status of interest $h_{a}(I_{i})$ after user consuming item $I_{i}$
+As shown in Equation (2) and (3), the interest vector captures the interest in user's previous and subsequent behavior. We define the temporary status of the interest when a user takes a behavior $I_{i}$ as the Equation (4) shown. This manner concatenates the previous temporary status of interest $h_{b}(I_{i})$ before user consuming item $I_{i}$, the embedding of behavior $I_{i}$ consumed item $e(I_{i})$, and the subsequent temporary status of interest $h_{a}(I_{i})$ after user consuming item $I_{i}$.
 \begin{equation}
 x_{i}=[h_{b}(I_{i});e(I_{i});h_{a}(I_{i})]
 \end{equation}
@@ -114,7 +116,7 @@ Max pooling is done by applying a max filter to non-overlapping subregions of th
 \begin{equation}
 y^{(4)}=W^{(4)}y^{(3)}+b^{(4)}
 \end{equation}
-where $W^{(4)}\in \mathbb{R}^{O\times H}$, $b^{(4)}\in \mathbb{R}^{O}$ are parameters to be learned, $O$ is the convolutional layer size.
+where $W^{(4)}\in \mathbb{R}^{O\times H}$, $b^{(4)}\in \mathbb{R}^{O}$ are parameters to be learned, $O$ is the fully-connected layer size.
 
 Finally, a softmax activation function applied to $y^{(4)}$, which can convert the output values to the probabilities of next items. 
 
@@ -138,18 +140,18 @@ The training target of the network is to minimize the categorical cross entropy 
 \begin{equation}
 \mathcal{L}(y,S,\theta )=-\sum_{u\in \mathbb{U}}[y_{u}\log p(y_{u}|S_{u},\theta)+(1-y_{u})\log (1-p(y_{u}|S_{u},\theta ))]
 \end{equation}
-% \subsection{Time Complexity Analysis}
+\subsection{Time Complexity Analysis}
 
-% In that sequence-based recommendation model, the calculation process mainly includes following steps: Embedding, Recurrent structure, Max-pooling and output.
+In that sequence-based recommendation model, the calculation process mainly includes following steps: Embedding, Recurrent structure, Max-pooling and output.
 
-% Firstly, our embedding layer creates an embedding matrix, the shape of embedding matrix is only related to the number of items and length of latent factor $|e|$. So the time complexity in the first step is $O(n)$. Secondly, the embedding matrix will be transported to a Recurrent Neural Network structure, We use a bi-directional Long Short-Term Memory (LSTM) structure in this layer, LSTM is a variant of Recurrent Neural Network \cite{22}. For every sequence, the bi-directional LSTM structure will apply a forward and a backward scan, and based on the citation [14], the time complexity of the bi-directional LSTM we can know is $O(n)$. Thirdly, the output of the bi-directional LSTM will be transported to the pooling layer, the time complexity of the pooling layer is also $O(n)$. The overall model is a cascade of those layers, therefore, our sequence-based recommendation model appears a time complexity of $O(n)$, which is linearly correlated with the number of sequences. The overall time complexity of the model is acceptable, so that big datas can be effectively processed.
+Firstly, our embedding layer creates an embedding matrix, the shape of embedding matrix is only related to the number of items and length of latent factor $|e|$. So the time complexity in the first step is $O(n)$. Secondly, the embedding matrix will be transported to a Recurrent Neural Network structure, We use a bi-directional Long Short-Term Memory (LSTM) structure in this layer, LSTM is a variant of Recurrent Neural Network \cite{Lecun2015Deep}. For every sequence, the bi-directional LSTM structure will apply a forward and a backward scan, and based on the citation \cite{Sak2014Long}, the time complexity of the bi-directional LSTM we can know is $O(n)$. Thirdly, the output of the bi-directional LSTM will be transported to the pooling layer, the time complexity of the pooling layer is also $O(n)$. The overall model is a cascade of those layers, therefore, our sequence-based recommendation model appears a time complexity of $O(n)$\cite{Resnick:1994:GOA:192844.192905,sarwar2001item}, which is linearly correlated with the number of sequences. The overall time complexity of the model is acceptable, so that big datas can be effectively processed.
 
 
 \section{Experiments}
 
 \subsection{Evaluation and Metrics}
 
-As a recommendation model, we will recommend top N item(s) for each user, denoted as $\hat{I}_{u}^{t+1}$. We adopt $Precision@N$, $Recall@N$ scores to evaluate our model and baseline models. We can define the measures as follows Equations. 11, 12:
+As a recommendation model, we will recommend top N item(s) for each user, denoted as $\hat{I}_{u}^{t+1}$. We adopt $Precision@N$, $Recall@N$ scores to evaluate our model and baseline models. We can define the measures as following equations:
 
 \begin{equation}
 Precision@N=\frac{\sum_{u}|\hat{I}_{u}^{t+1}\cap I_{u}^{t+1} |}{\left | \mathbb{U} \right |*N}
@@ -158,16 +160,16 @@ Precision@N=\frac{\sum_{u}|\hat{I}_{u}^{t+1}\cap I_{u}^{t+1} |}{\left | \mathbb{
 \begin{equation}
 Recall@N=\frac{\sum_{u}|\hat{I}_{u}^{t+1}\cap I_{u}^{t+1} |}{\left |\sum_{u}|I_{u}^{t+1}| \right |}
 \end{equation}
-In order to get a harmonic average of the precise and recall, the $F1@N$ score was measured here, where a higher F1 score reaches, a more effective result gets, which is shown as Eqs. 13:
+In order to get a harmonic average of the precise and recall, the $F1@N$ score was measured here, where a higher F1 score reaches, a more effective result gets, which is shown as Equations (13):
 
 \begin{equation}
 F1@N=\frac{2\times Precision@N\times Recall@N}{Precision@N+Recall@N}
 \end{equation}
 \subsection{Dataset and Experimental Settings}
 
-Since fewer existing recommendation datasets reserve the continuity of user behavior information, in order to verify our approach is feasible, we perform experiments on a real-world dataset and make it publice: LiveStreaming \footnote{Data is available in https://www.kaggle.com/hailinfu/livestreaming} dataset, which collected users' behavior data from a live streaming website in China. Each line in LiveStreaming records a sequence of browsed items of a user in ascending order of time.  The initial collected LiveStreaming dataset contains 1806204 lines, which means that contacts 1806204 unique users. The length of each line ranges from 1 to 1060. Total 541772 different items contained in that dataset. We remove those users who are annotated by less than 15 items then randomly select 10 thousand users as the experimental part denoted as LiveStreaming-10M. Finally, 10000 users and 12292 items contain in LiveStreaming-10M. We split 80\% of this part into training set, and keep the remaining 20\% as the validation set.
+Since fewer existing recommendation datasets reserve the continuity of user behavior information, to verify our approach is feasible, we perform experiments on a real-world dataset and make it public: LiveStreaming \footnote{Data is available in https://www.kaggle.com/hailinfu/livestreaming} dataset, which collected users' behavior data from a live streaming website in China. Each line in LiveStreaming records a sequence of browsed items of a user in ascending order of time.  The initial collected LiveStreaming dataset contains 1806204 lines, which means that contacts 1806204 unique users. The length of each line ranges from 1 to 1060. Total 541772 different items contained in that dataset. We remove those users who are annotated by less than 15 items then randomly select 10 thousand users as the experimental part denoted as LiveStreaming-10M. Finally, 10000 users and 12292 items contain in LiveStreaming-10M. We randomly split 80\% of this part into training set, and keep the remaining 20\% as the validation set.
 
-Our model is implemented on Keras with TensorFlow-gpu backend, trained on a single GeForce GTX 1050 with 4 GB memory. For hyper-parameter settings, we set: embedding layer size $|e|$ = 100, recurrent layer size $H$ = 200, convolutional layer size $O$ = 100, batch size as 32 and initial number of epochs as 100, learning rate $\alpha$ as 0.01, momentum $\beta $ as 0.9.
+Our model is implemented on Keras with TensorFlow-gpu backend, trained on a single GeForce GTX 1050 with 4 GB memory. For hyper-parameter settings, we set: embedding layer size $|e|$ = 100, recurrent layer size $H$ = 200, fully-connected layer size $O$ = 100, batch size as 32 and initial number of epochs as 100, learning rate $\alpha$ as 0.01, momentum $\beta $ as 0.9, we adopt classification top 20 accuracy as the evaluation metric.Our code is publicly available\footnote{Code is available in https://github.com/fuhailin/BiLSTM4Rec}.
 
 \begin{figure}[!htb]
    \begin{minipage}{0.48\textwidth}
@@ -182,18 +184,18 @@ Our model is implemented on Keras with TensorFlow-gpu backend, trained on a sing
      % \caption{Interpolation for Data 2}
      % \label{Fig:Data2}
    \end{minipage}
-   \caption{The training results of CBLSTM model on 80\% LiveStreaming-10M with different Time Windows}
+   \caption{The training results of BiLSTM4Rec model on 80\% LiveStreaming-10M with different Time Windows}
    % \label{fig:coffee}
 \end{figure}
 
 % \begin{figure}[htbp]
 % \centerline
 % {\includegraphics[height=6.2cm]{image/10thousand@6.png}}
-% \caption{CbLSTM training on 80\% LiveStreaming-10M with Time Windows as 5, and recommends items with the top 20 probability values}
+% \caption{BiLSTM4Rec training on 80\% LiveStreaming-10M with Time Windows as 5, and recommends items with the top 20 probability values}
 % \label{fig}
 % \end{figure}
 
-We also explore how many data the CBLSTM model needs for every user to learn the global sequences tendency and make a good recommendation, so we design a experiment using LiveStreaming-10M with different Time Windows ranges from 1 to 10. When Time Windows equals to 2, means we only use the last item in sequence as label, the latest one item as feature to fit our model. 
+We also explore how many data the BiLSTM4Rec model needs for every user to learn the global sequences tendency and make a good recommendation, so we design an experiment using LiveStreaming-10M with different Time Windows ranges from 1 to 10. When Time Windows equals to 1, means we only use the last item in the sequence as label, the latest one item as feature to fit our model. Figure 3 shows that when Time Windows is less than 6, the results tend to be stable. When Time Windows is too small, much information will lose; too big, it will be hard to train the model. So we choose Time Windows as five in the next experiment.
 \begin{figure}[!htb]
    \begin{minipage}{0.48\textwidth}
      \centering
@@ -207,7 +209,7 @@ We also explore how many data the CBLSTM model needs for every user to learn the
      % \caption{Interpolation for Data 2}
      % \label{Fig:Data2}
    \end{minipage}
-   \caption{The training results of CBLSTM model on 80\% LiveStreaming-10M with different Time Windows}
+   \caption{The training results of BiLSTM4Rec model on 80\% LiveStreaming-10M with different Time Windows}
    % \label{fig:coffee}
 \end{figure}
 
@@ -216,14 +218,14 @@ We also explore how many data the CBLSTM model needs for every user to learn the
 In this paper, We compare our model with several existing baselines, and the state-of-the-art approaches in the area of recommendation system:
 
  \begin{itemize}
-\item \textbf{POP}: Popularity predictor that always recommends the most popular items of the training set, it feedbacks the global popularity. Despite its simplicity it is often a strong baseline in certain domains.
+\item \textbf{POP}: Popularity predictor that always recommends the most popular items of the training set, it feedbacks the global popularity. Despite its simplicity, it is often a strong baseline in certain domains.
 % \item \textbf{T-POP}: This baseline recommends the most popular items at the current moment.
-\item \textbf{IBCF}: Collaborative Filtering is one of the most classical method of recommendation, which includes Item-based Collaborative Filtering (IBCF) \cite{2}and User-based Collaborative Filtering (UBCF \cite{1}, both yet still strong baselines for top-N recommendation. User-based collaborative filtering which evaluate the similarity between users by different users’ ratings on the item, recommending those items for user consumed by his similar users but not yet consumed by him. However, not every dataset for recommendation contains users' ratings information, in this task, we set the rating 1 if user consumed the corresponding item, or 0 if not. Similarity between $u_{i}$ and $u_{j}$ was measured using cosine angle:
+\item \textbf{IBCF}: Collaborative Filtering is one of the most classical methods of recommendation, which includes Item-based Collaborative Filtering (IBCF) \cite{sarwar2001item}and User-based Collaborative Filtering (UBCF \cite{Resnick:1994:GOA:192844.192905}, both yet still strong baselines for top-N recommendation. User-based collaborative filtering which evaluates the similarity between users by different users' ratings on the item, recommending those items for user consumed by his similar users but not yet consumed by him. However, not every dataset for recommendation contains users' rating information, in this task, we set the rating 1 if user consumed the corresponding item, or 0 if not. Similarity between $u_{i}$ and $u_{j}$ was measured using cosine angle:
 \begin{equation}
 sim(u_{i},u_{j})=\cos (\vec{u_{i}},\vec{u_{j}})=\frac{\vec{u_{i}}\cdot \vec{u_{j}}}{\left \| \vec{u_{i}} \right \|_{2}\ast \left \| \vec{u_{j}} \right \|_{2}}
 \end{equation}
 
-\item \textbf{UBCF}: User-based Collaborative Filtering which evaluate the similarity between items by different users’ ratings on the item, recommending items similar to those items consumed already for user. In UBCF, we also use cosine angle to measure similarity between items.
+\item \textbf{UBCF}: User-based Collaborative Filtering which evaluates the similarity between items by different users' ratings on the item, recommending items similar to those items consumed already for user. In UBCF, we also use cosine angle to measure similarity between items.
 % \item \textbf{PMF}: 
 % \item \textbf{Apriori}:
 \end{itemize}
@@ -233,7 +235,7 @@ sim(u_{i},u_{j})=\cos (\vec{u_{i}},\vec{u_{j}})=\frac{\vec{u_{i}}\cdot \vec{u_{j
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 
-\textbf{Metrics} & \textbf{POP}& \textbf{UBCF}& \textbf{IBCF}& \textbf{CBLSTM} \\
+\textbf{Metrics} & \textbf{POP}& \textbf{UBCF}& \textbf{IBCF}& \textbf{BiLSTM4Rec} \\
 \hline
 Precision@1& 0.0056& 0.0108 & 0.0112 & \textbf{0.1135} \\
 \hline
@@ -259,13 +261,15 @@ F1@20& 0.000285714& \textbf{0.1154} & 0.008961905 & 0.035095238095238096\\
 \caption{When the length of recommendation list is 1,5,20 respectively, we compare different approaches using LiveStreaming-10M dataset with Time Windows as 5}
 \end{table}
 
-Our experiments firstly compare CBLSTM model with itself in different length of sequence. From the Fig.4 we can conclude that our sequence-based recommendation with CBLSTM also can make recommendations for someone even though with a little information about him. Our approach provides a way to solve the famous cold start problem for recommendation system. Furthermore, from the results (Tab. 1), we can see that the performances of our approach are consistently better than other traditional recommendation baselines on this living broadcast dataset.
+Our experiments firstly compare BiLSTM4Rec model with itself in different length of sequence. From the Fig.4 we can conclude that our sequence-based recommendation with BiLSTM4Rec also can make recommendations for someone even though with a little information about him. Our approach provides a way to solve the famous cold start problem for recommendation system. Furthermore, from the results (Tab. 1), we can see that the performances of our approach are consistently better than other traditional recommendation baselines on this living broadcast dataset.
 
 \section{Results and Conclusion}
 
-Overall, in this paper, we propose a novel recommendation framework using generated orders of historical data to predict what users will choose next. Moreover, we introduce convolutional bidirectional Long Short-Term Memory to new application domain: recommendation system. We use embedding matrix to deal with consumed items sequences, and the final model can learn short-term interest of user. Experimental results show that our approach significantly outperforms existing methods, and shows it is suitable to do a short-term prediction. 
+Overall, BiLSTM4Rec is a novel recommendation by modeling recent consumed items as a “sentence” to predict what users will choose next. Moreover, we introduced the Bidirectional Long Short-Term Memory neural network to a new application domain: recommendation system. We dealt with consumed items sequences by embedding matrix to save memory cost,  and the final model can learn short-term interest of the user. Experimental results show that our approach significantly outperforms existing methods, and shows it is suitable to do a short-term prediction. 
 
-In future work, we want to use neural network to capture other information not only the sequences of data, and to generate a more accurate and longer term prediction.
+In future work, we want to use neural networks to capture other information not only the sequences of data, and to generate a more accurate and longer term prediction.
+
+Acknowledgement. This work is partially supported by the National Natural Science Foundation of China (No. 61772211)
 
 %
 % ---- Bibliography ----
@@ -276,52 +280,6 @@ In future work, we want to use neural network to capture other information not o
 % \bibliographystyle{splncs04}
 % \bibliography{mybibliography}
 %
-\begin{thebibliography}{8}
-\bibitem{1} Resnick P, Iacovou N, Suchak M, et al. GroupLens: an open architecture for collaborative filtering of netnews[C]// ACM Conference on Computer Supported Cooperative Work. ACM, 1994:175-186. (1994)
-
-\bibitem{2} Sarwar B, Karypis G, Konstan J, et al. Item-based collaborative filtering recommendation algorithms[C]// International Conference on World Wide Web. ACM, 2001:285-295. (2001)
-
-\bibitem{3} Chen YH, George EI. A Bayesian model for collaborative filtering. In: Proc. of the Int’l Workshop on Artificial Intelligence and Statistics. (1999)
-
-\bibitem{4} Ungar LH, Foster DP. Clustering methods for collaborative filtering. In: Proc. of the AAAI Workshop on Recommendation
-Systems. AAAI Press, 1998. 84−88 (1998)
-
-\bibitem{5} Salakhutdinov R, Mnih A. Probabilistic matrix factorization[C]// International Conference on Machine Learning. 2008:880-887. (2008)
-
-\bibitem{6} Balabanovi, Marko, Shoham Y. Fab: content-based, collaborative recommendation[J]. Communications of the Acm, 1997, 40(3):66-72. (1997)
-
-\bibitem{7} Burke R. Hybrid Recommender Systems: Survey and Experiments[J]. User Modeling and User-Adapted Interaction, 2002, 12(4):331-370. (2002)
-
-\bibitem{8} Dieleman S, Schrauwen B. Deep content-based music recommendation[C]// International Conference on Neural Information Processing Systems. Curran Associates Inc. 2013:2643-2651.(2013)
-
-\bibitem{9} Okura S, Tagami Y, Ono S, et al. Embedding-based News Recommendation for Millions of Users[C]//Proceedings of the 23rd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. ACM, 2017: 1933-1942. (2017)
-
-\bibitem{10} Covington P, Adams J, Sargin E. Deep Neural Networks for YouTube Recommendations[C]// ACM Conference on Recommender Systems. ACM, 2016:191-198. (2016)
-
-\bibitem{11} Hidasi, Balázs, et al. "Session-based recommendations with recurrent neural networks." arXiv preprint arXiv:1511.06939 (2015)
-
-\bibitem{12} Adomavicius G, Tuzhilin A. Toward the next generation of recommender systems: A survey of the state-of-the-art and possible extensions[J]. IEEE transactions on knowledge and data engineering, 2005, 17(6): 734-749. (2005)
-
-\bibitem{13} Lai, Siwei, et al. "Recurrent Convolutional Neural Networks for Text Classification." AAAI. Vol. 333. 2015. (2015)
-
-\bibitem{14} Sak H, Senior A, Beaufays F. Long short-term memory recurrent neural network architectures for large scale acoustic modeling[J]. Computer Science, 2014:338-342. (2014)
-
-\bibitem{15} Wan S, Lan Y, Wang P, et al. Next Basket Recommendation with Neural Networks[C]//RecSys Posters. 2015. (2015)
-
-\bibitem{16} Devooght R, Bersini H. Collaborative filtering with recurrent neural networks[J]. arXiv preprint arXiv:1608.07400, 2016. (2016)
-
-\bibitem{17} Yu F, Liu Q, Wu S, et al. A dynamic recurrent model for next basket recommendation[C]//Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. ACM, 2016: 729-732. (2016)
-
-\bibitem{18} Ko Y J, Maystre L, Grossglauser M. Collaborative recurrent neural networks for dynamic recommender systems[C]//Asian Conference on Machine Learning. 2016: 366-381. (2016)
-
-\bibitem{19} Jannach D, Ludewig M. When recurrent neural networks meet the neighborhood for session-based recommendation[C]//Proceedings of the Eleventh ACM Conference on Recommender Systems. ACM, 2017: 306-310. (2017)
-
-\bibitem{20} Zhang S, Yao L, Sun A. Deep Learning based Recommender System: A Survey and New Perspectives[J]. arXiv preprint arXiv:1707.07435, 2017. (2017)
-
-\bibitem{21} Bengio Y, Ducharme R, Vincent P, et al. A neural probabilistic language model[J]. Journal of machine learning research, 2003, 3(Feb): 1137-1155. (2003)
-
-\bibitem{22} Ian Goodfellow, Yoshua Bengio, and Aaron Courville. 2016. Deep Learning. MIT Press. htp://www.deeplearningbook.org.
-
-\bibitem{23} Tang, Jiaxi, and Ke Wang. "Personalized Top-N Sequential Recommendation via Convolutional Sequence Embedding." [C]//Proceedings of the Eleventh ACM International Conference on Web Search and Data Mining. WSDM 2018: 565-573. (2018).
-\end{thebibliography}
+\bibliographystyle{splncs04}
+\bibliography{references}
 \end{document}
