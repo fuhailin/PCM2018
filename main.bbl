@@ -1,0 +1,94 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\doi}[1]{https://doi.org/#1}
+
+\bibitem{Adomavicius2013Toward}
+Adomavicius, G., Tuzhilin, A.: Toward the Next Generation of Recommender
+  Systems: A Survey of the State-of-the-Art and Possible Extensions. Springer
+  International Publishing (2013)
+
+\bibitem{agrawal1993mining}
+Agrawal, R., Imieli{\'n}ski, T., Swami, A.: Mining association rules between
+  sets of items in large databases. In: Acm sigmod record. vol.~22, pp.
+  207--216. ACM (1993)
+
+\bibitem{balabanovic1997fab}
+Balabanovi{\'c}, M., Shoham, Y.: Fab: content-based, collaborative
+  recommendation. Communications of the ACM  \textbf{40}(3),  66--72 (1997)
+
+\bibitem{burke2002hybrid}
+Burke, R.: Hybrid recommender systems: Survey and experiments. User modeling
+  and user-adapted interaction  \textbf{12}(4),  331--370 (2002)
+
+\bibitem{chien1999bayesian}
+Chien, Y.H., George, E.I.: A bayesian model for collaborative filtering. In:
+  AISTATS (1999)
+
+\bibitem{covington2016deep}
+Covington, P., Adams, J., Sargin, E.: Deep neural networks for youtube
+  recommendations. In: Proceedings of the 10th ACM Conference on Recommender
+  Systems. pp. 191--198. ACM (2016)
+
+\bibitem{Hidasi2015Session}
+Hidasi, B., Karatzoglou, A., Baltrunas, L., Tikk, D.: Session-based
+  recommendations with recurrent neural networks. Computer Science  (2015)
+
+\bibitem{li2008pfp}
+Li, H., Wang, Y., Zhang, D., Zhang, M., Chang, E.Y.: Pfp: parallel fp-growth
+  for query recommendation. In: Proceedings of the 2008 ACM conference on
+  Recommender systems. pp. 107--114. ACM (2008)
+
+\bibitem{mnih2008probabilistic}
+Mnih, A., Salakhutdinov, R.R.: Probabilistic matrix factorization. In: Advances
+  in neural information processing systems. pp. 1257--1264 (2008)
+
+\bibitem{okura2017embedding}
+Okura, S., Tagami, Y., Ono, S., Tajima, A.: Embedding-based news recommendation
+  for millions of users. In: Proceedings of the 23rd ACM SIGKDD International
+  Conference on Knowledge Discovery and Data Mining. pp. 1933--1942. ACM (2017)
+
+\bibitem{Resnick:1994:GOA:192844.192905}
+Resnick, P., Iacovou, N., Suchak, M., Bergstrom, P., Riedl, J.: Grouplens: An
+  open architecture for collaborative filtering of netnews. In: Proceedings of
+  the 1994 ACM Conference on Computer Supported Cooperative Work. pp. 175--186.
+  CSCW '94, ACM, New York, NY, USA (1994). \doi{10.1145/192844.192905},
+  \url{http://doi.acm.org/10.1145/192844.192905}
+
+\bibitem{Sak2014Long}
+Sak, H., Senior, A., Beaufays, F.: Long short-term memory recurrent neural
+  network architectures for large scale acoustic modeling. Computer Science pp.
+  338--342 (2014)
+
+\bibitem{sarwar2001item}
+Sarwar, B., Karypis, G., Konstan, J., Riedl, J.: Item-based collaborative
+  filtering recommendation algorithms. In: Proceedings of the 10th
+  international conference on World Wide Web. pp. 285--295. ACM (2001)
+
+\bibitem{Tang:2018:PTS:3159652.3159656}
+Tang, J., Wang, K.: Personalized top-n sequential recommendation via
+  convolutional sequence embedding. In: Proceedings of the Eleventh ACM
+  International Conference on Web Search and Data Mining. pp. 565--573. WSDM
+  '18, ACM, New York, NY, USA (2018). \doi{10.1145/3159652.3159656},
+  \url{http://doi.acm.org/10.1145/3159652.3159656}
+
+\bibitem{ungar1998clustering}
+Ungar, L.H., Foster, D.P.: Clustering methods for collaborative filtering. In:
+  AAAI workshop on recommendation systems. vol.~1, pp. 114--129 (1998)
+
+\bibitem{Wan2015NextBR}
+Wan, S., Lan, Y., Wang, P., Guo, J., Xu, J., Cheng, X.: Next basket
+  recommendation with neural networks. In: RecSys Posters (2015)
+
+\bibitem{Zhang2017DeepLB}
+Zhang, S., Yao, L., Sun, A.: Deep learning based recommender system: A survey
+  and new perspectives. CoRR  \textbf{abs/1707.07435} (2017)
+
+\bibitem{ijcai2017-504}
+Zhu, Y., Li, H., Liao, Y., Wang, B., Guan, Z., Liu, H., Cai, D.: What to do
+  next: Modeling user behaviors by time-lstm. In: Proceedings of the
+  Twenty-Sixth International Joint Conference on Artificial Intelligence,
+  {IJCAI-17}. pp. 3602--3608 (2017). \doi{10.24963/ijcai.2017/504},
+  \url{https://doi.org/10.24963/ijcai.2017/504}
+
+\end{thebibliography}

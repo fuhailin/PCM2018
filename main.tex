@@ -49,7 +49,7 @@ Our work was inspired by the previous study of Siwei Lai et al.[13], where a neu
  \begin{itemize}
 
 \item We propose a novel Sequence-based Recommendation model with Bidirectional Long Short-Term Memory neural network,  or BiLSTM4Rec for short, which can capture the sequential features of data, as well scales linearly with the number of objectives (both of users and items).
-\item We regard item sequence as a sentence and use an $M\times d$ embedding matrix $E$ to represent $M$ items which reduces memory cost evidently when facing big data.
+\item We regard item sequence as a sentence and use an $M\times d$ embedding matrix $E$ to represent $M$ items which reduces memory cost evidently when faced big data.
  \end{itemize}
 
 % The reset of the paper is organized as follows. Related work is discussed briefly in Section 2. In Section 3, we introduce the overall recommendation framework in detail. Section 4 introduces the experiments, we compare our proposed method with the traditional recommendation methods on the same real-world dataset. Finally we conclude this paper in Section 5, and point out some future work.
@@ -57,10 +57,10 @@ Our work was inspired by the previous study of Siwei Lai et al.[13], where a neu
 \section{Related Work}
 \subsection{Traditional methods in recommendation}
 
-There are three main classes of traditional recommendation systems. Those are collaborative filtering systems, content-based filtering systems, and hybrid recommendation systems \cite{Adomavicius2013Toward}. Collaborative filtering can be generally classified into Memory-based \cite{Resnick:1994:GOA:192844.192905,sarwar2001item} collaborative filtering and Model-based \cite{chien1999bayesian,ungar1998clustering,mnih2008probabilistic} collaborative filtering. Memory-based collaborative filtering \cite{Resnick:1994:GOA:192844.192905,sarwar2001item,chien1999bayesian,ungar1998clustering} systems generate recommendations for users by finding similar user or item groups. Model-based collaborative filtering systems , \emph{e.\,g.}, Bayesian networks \cite{chien1999bayesian}, clustering models \cite{ungar1998clustering}, Probabilistic Matrix Factorization \cite{mnih2008probabilistic}, mainly use the rating information to train corresponding model then use this model to predict unknown data. Content-based systems \cite{balabanovic1997fab} generate recommendations for users based on a description of the item and a profile of the user's preference. Hybrid recommendation systems \cite{burke2002hybrid} combine both collaborative and content-based approaches. However, above traditional methods are not suitable for sequential features capturing. Association rules, \emph{e.\,g.}, Apriori \cite{agrawal1993mining} and FP-Growth \cite{li2008pfp}, can be used to mine sequential features, but they suffer from sensitivity to threshold settings, high time and space complexity, missing of minority rules.
+There are three main classes of traditional recommendation systems. Those are collaborative filtering systems, content-based filtering systems, and hybrid recommendation systems \cite{Adomavicius2013Toward}. Collaborative filtering(CF) can be generally classified into Memory-based \cite{Resnick:1994:GOA:192844.192905,sarwar2001item} CF and Model-based \cite{chien1999bayesian,ungar1998clustering,mnih2008probabilistic} CF. Memory-based CF \cite{Resnick:1994:GOA:192844.192905,sarwar2001item,chien1999bayesian,ungar1998clustering} systems generate recommendations for users by finding similar user or item groups. Model-based CF systems , \emph{e.\,g.}, Bayesian networks \cite{chien1999bayesian}, clustering models \cite{ungar1998clustering}, Probabilistic Matrix Factorization \cite{mnih2008probabilistic}, mainly use the rating information to train corresponding model then use this model to predict unknown data. Content-based systems \cite{balabanovic1997fab} generate recommendations for users based on a description of the item and a profile of the user's preference. Hybrid recommendation systems \cite{burke2002hybrid} combine both collaborative and content-based approaches. However, above traditional methods are not suitable for sequential features capturing. Association rules, \emph{e.\,g.}, Apriori \cite{agrawal1993mining} and FP-Growth \cite{li2008pfp}, can be used to mine sequential features, but they suffer from sensitivity to threshold settings, high time and space complexity, missing of minority rules.
 
 \subsection{Deep learning in recommendation}
-Deep learning can efficiently capture unstructured data, and extract more complex abstractions into higher-level data representation \cite{Zhang2017DeepLB}.  Shumpei et al. \cite{okura2017embedding} presented an RNN based news recommender system for Yahoo News. Covington et al. \cite{covington2016deep} used historical query, demographic and other contextual information as features, presented a deep neural network based recommendation algorithm for video recommendation on YouTube. Hidasi, Balázs, et al. \cite{Hidasi2015Session} presented a Session-based recommendation with an RNN variant, i.e., GRU. Wan, Shengxian, et al. \cite{Wan2015NextBR} also used RNN to build a next basket recommendation. Zhu Y et al. \cite{ijcai2017-504} used a LSTM variant, i.e., Time-LSTM, to model users’ sequential actions. Tang et al. \cite{Tang:2018:PTS:3159652.3159656} propose Convolutional Sequence Embedding Recommendation Model which incorporates the Convolutional Neural Network (CNN) to learn sequential features, and Latent Factor Model (LFM) to learn user specific features to personalized top-N sequential recommendation. Those works show deep neural networks suit recommendation and RNN architectures are good at modeling the sequential order of objects.
+Deep learning can efficiently capture unstructured data, and extract more complex abstractions into higher-level data representation \cite{Zhang2017DeepLB}.  Shumpei et al. \cite{okura2017embedding} presented a Recurrent Neural Network(RNN) based news recommender system for Yahoo News. Covington et al. \cite{covington2016deep} used historical query, demographic and other contextual information as features, presented a deep neural network based recommendation algorithm for video recommendation on YouTube. Hidasi, Balázs, et al. \cite{Hidasi2015Session} presented a Session-based recommendation with an RNN variant, i.e., GRU. Wan, Shengxian, et al. \cite{Wan2015NextBR} also used RNN to build a next basket recommendation. Zhu Y et al. \cite{ijcai2017-504} used a LSTM variant, i.e., Time-LSTM, to model users’ sequential actions. Tang et al. \cite{Tang:2018:PTS:3159652.3159656} propose Convolutional Sequence Embedding Recommendation Model which incorporates the Convolutional Neural Network (CNN) to learn sequential features, and Latent Factor Model (LFM) to learn user specific features to personalized top-N sequential recommendation. Those works show deep neural networks suit recommendation and RNN architectures are good at modeling the sequential order of objects.
 
 \section{Proposed Approach}
 
@@ -82,7 +82,7 @@ We consider any item can appear only once in the history of a user. Therefore mo
 e(I_{i})=EI_{i}
 \end{equation}
 where $E\in \mathbb{R}^{|e|\times |M|}$, $|e|$ is the size of the embedding layer, $|M|$ is the number of items in the training set. So $e(I_{i})$ is the embedding of consumed item $I_{i}$, which is a dense vector with $|e|$ real value elements.
-Compared with the One-hot encoder (size of $|M|\times|M|$), our item sequence embedding matrix (size of $|e|\times|M|$) reduces memory cost rapidly when dealing with big data.
+Compared with the One-hot encoder (size of $|M|\times|M|$), our item sequence embedding matrix (size of $|e|\times|M|$) reduces memory cost rapidly when dealt with big data.
 
 \subsection{User Short-term Interest Learning}
 We combine a user consumed item $I_{u}^{t}$ and other items previous and subsequent $I_{u}^{t}$ to present the current interest of user $u$ at time $t$. The behavior sequences help us to indicate a more precise short-term interest of user. In this recommender, we use a recurrent structure, which is a bidirectional Long Short-Term Memory neural network, to capture the short-term interest of the user.
@@ -142,9 +142,7 @@ The training target of the network is to minimize the categorical cross entropy 
 \end{equation}
 \subsection{Time Complexity Analysis}
 
-In that sequence-based recommendation model, the calculation process mainly includes following steps: Embedding, Recurrent structure, Max-pooling and output.
-
-Firstly, our embedding layer creates an embedding matrix, the shape of embedding matrix is only related to the number of items and length of latent factor $|e|$. So the time complexity in the first step is $O(n)$. Secondly, the embedding matrix will be transported to a Recurrent Neural Network structure, We use a bi-directional Long Short-Term Memory (LSTM) structure in this layer, LSTM is a variant of Recurrent Neural Network \cite{Lecun2015Deep}. For every sequence, the bi-directional LSTM structure will apply a forward and a backward scan, and based on the citation \cite{Sak2014Long}, the time complexity of the bi-directional LSTM we can know is $O(n)$. Thirdly, the output of the bi-directional LSTM will be transported to the pooling layer, the time complexity of the pooling layer is also $O(n)$. The overall model is a cascade of those layers, therefore, our sequence-based recommendation model appears a time complexity of $O(n)$\cite{Resnick:1994:GOA:192844.192905,sarwar2001item}, which is linearly correlated with the number of sequences. The overall time complexity of the model is acceptable, so that big datas can be effectively processed.
+In the embedding layer, it has a matrix multiplication operation with time complexity of $O(n)$. In the recurrent structure, for every sequence, the bi-directional LSTM structure will apply a forward and a backward scan, and based on the citation \cite{Sak2014Long}, the time complexity of the biLSTM we can know is $O(n)$. The time complexity of the pooling layer and the fully-connected layer is also $O(n)$. The overall model is a cascade of those layers, therefore, our sequence-based recommendation model appears a time complexity of $O(n)$, which is linearly correlated with the number of sequences. The overall time complexity of the model is more acceptable than collaborative filtering($O(n^{2})$)\cite{Resnick:1994:GOA:192844.192905,sarwar2001item}, so that big data can be effectively processed.
 
 
 \section{Experiments}
@@ -171,22 +169,6 @@ Since fewer existing recommendation datasets reserve the continuity of user beha
 
 Our model is implemented on Keras with TensorFlow-gpu backend, trained on a single GeForce GTX 1050 with 4 GB memory. For hyper-parameter settings, we set: embedding layer size $|e|$ = 100, recurrent layer size $H$ = 200, fully-connected layer size $O$ = 100, batch size as 32 and initial number of epochs as 100, learning rate $\alpha$ as 0.01, momentum $\beta $ as 0.9, we adopt classification top 20 accuracy as the evaluation metric.Our code is publicly available\footnote{Code is available in https://github.com/fuhailin/BiLSTM4Rec}.
 
-\begin{figure}[!htb]
-   \begin{minipage}{0.48\textwidth}
-     \centering
-     \includegraphics[width=\linewidth]{image/model_loss.eps}
-     % \caption{Interpolation for Data 1}
-     % \label{Fig:Data1}
-   \end{minipage}\hfill
-   \begin {minipage}{0.48\textwidth}
-     \centering
-     \includegraphics[width=\linewidth]{image/Top_20_accuracy.eps}
-     % \caption{Interpolation for Data 2}
-     % \label{Fig:Data2}
-   \end{minipage}
-   \caption{The training results of BiLSTM4Rec model on 80\% LiveStreaming-10M with different Time Windows}
-   % \label{fig:coffee}
-\end{figure}
 
 % \begin{figure}[htbp]
 % \centerline
@@ -213,6 +195,23 @@ We also explore how many data the BiLSTM4Rec model needs for every user to learn
    % \label{fig:coffee}
 \end{figure}
 
+\begin{figure}[!htb]
+   \begin{minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=\linewidth]{image/model_loss.eps}
+     % \caption{Interpolation for Data 1}
+     % \label{Fig:Data1}
+   \end{minipage}\hfill
+   \begin {minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=\linewidth]{image/Top_20_accuracy.eps}
+     % \caption{Interpolation for Data 2}
+     % \label{Fig:Data2}
+   \end{minipage}
+   \caption{BiLSTM4Rec training on 80\% LiveStreaming-10M with Time Windows as 5, and recommends items with the top 20 probability values}
+   % \label{fig:coffee}
+\end{figure}
+
 
 \subsection{Compared Algorithms}
 In this paper, We compare our model with several existing baselines, and the state-of-the-art approaches in the area of recommendation system:
@@ -220,7 +219,7 @@ In this paper, We compare our model with several existing baselines, and the sta
  \begin{itemize}
 \item \textbf{POP}: Popularity predictor that always recommends the most popular items of the training set, it feedbacks the global popularity. Despite its simplicity, it is often a strong baseline in certain domains.
 % \item \textbf{T-POP}: This baseline recommends the most popular items at the current moment.
-\item \textbf{IBCF}: Collaborative Filtering is one of the most classical methods of recommendation, which includes Item-based Collaborative Filtering (IBCF) \cite{sarwar2001item}and User-based Collaborative Filtering (UBCF \cite{Resnick:1994:GOA:192844.192905}, both yet still strong baselines for top-N recommendation. User-based collaborative filtering which evaluates the similarity between users by different users' ratings on the item, recommending those items for user consumed by his similar users but not yet consumed by him. However, not every dataset for recommendation contains users' rating information, in this task, we set the rating 1 if user consumed the corresponding item, or 0 if not. Similarity between $u_{i}$ and $u_{j}$ was measured using cosine angle:
+\item \textbf{IBCF}:As the most classical methods of recommendation, Item-based Collaborative Filtering (IBCF) \cite{sarwar2001item}and User-based Collaborative Filtering (UBCF) \cite{Resnick:1994:GOA:192844.192905}, both yet still strong baselines for top-N recommendation. In this task, we set the rating 1 if user consumed the corresponding item, or 0 if not. Similarity between $u_{i}$ and $u_{j}$ was measured using cosine angle:
 \begin{equation}
 sim(u_{i},u_{j})=\cos (\vec{u_{i}},\vec{u_{j}})=\frac{\vec{u_{i}}\cdot \vec{u_{j}}}{\left \| \vec{u_{i}} \right \|_{2}\ast \left \| \vec{u_{j}} \right \|_{2}}
 \end{equation}
@@ -260,16 +259,16 @@ F1@20& 0.000285714& \textbf{0.1154} & 0.008961905 & 0.035095238095238096\\
 \end{center}
 \caption{When the length of recommendation list is 1,5,20 respectively, we compare different approaches using LiveStreaming-10M dataset with Time Windows as 5}
 \end{table}
-
-Our experiments firstly compare BiLSTM4Rec model with itself in different length of sequence. From the Fig.4 we can conclude that our sequence-based recommendation with BiLSTM4Rec also can make recommendations for someone even though with a little information about him. Our approach provides a way to solve the famous cold start problem for recommendation system. Furthermore, from the results (Tab. 1), we can see that the performances of our approach are consistently better than other traditional recommendation baselines on this living broadcast dataset.
+Our experiments firstly compare BiLSTM4Rec model with itself in different length of sequence. From the Fig.2 we can conclude that our sequence-based recommendation also can make recommendations for someone even though with a little information about him. Furthermore, from the results (Tab. 1), we can see that the performances of our approach are better than other traditional recommendation baselines on this living broadcast dataset, especially when faced with short-term predictions.
 
 \section{Results and Conclusion}
 
-Overall, BiLSTM4Rec is a novel recommendation by modeling recent consumed items as a “sentence” to predict what users will choose next. Moreover, we introduced the Bidirectional Long Short-Term Memory neural network to a new application domain: recommendation system. We dealt with consumed items sequences by embedding matrix to save memory cost,  and the final model can learn short-term interest of the user. Experimental results show that our approach significantly outperforms existing methods, and shows it is suitable to do a short-term prediction. 
+Overall, BiLSTM4Rec is a novel recommendation by modeling recent consumed items as a "sentence" to predict what users will choose next. We introduced the Bidirectional Long Short-Term Memory neural network to a new application domain: recommendation system. We dealt with consumed items sequences by embedding matrix to save memory cost, and the final model can learn short-term interest of the user. Experimental results show that our approach outperforms existing methods to a great extent, and shows it is suitable to do a short-term prediction. Moreover, it doesn't have an unacceptable time complexity.
 
 In future work, we want to use neural networks to capture other information not only the sequences of data, and to generate a more accurate and longer term prediction.
 
-Acknowledgement. This work is partially supported by the National Natural Science Foundation of China (No. 61772211)
+~\\
+\textbf{Acknowledgement.} This work was supported by the National Science Foundation of China (No. 61772211, No. 61750110516).
 
 %
 % ---- Bibliography ----
