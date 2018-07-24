@@ -5,6 +5,7 @@
 \documentclass[runningheads]{llncs}
 %
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[misc]{ifsym} 
 % Used for displaying a sample figure. If possible, figure files should
@@ -142,7 +143,7 @@ The training target of the network is to minimize the categorical cross entropy 
 \end{equation}
 \subsection{Time Complexity Analysis}
 
-In the embedding layer, it has a matrix multiplication operation with time complexity of $O(n)$. In the recurrent structure, for every sequence, the bi-directional LSTM structure will apply a forward and a backward scan, and based on the citation \cite{Sak2014Long}, the time complexity of the biLSTM we can know is $O(n)$. The time complexity of the pooling layer and the fully-connected layer is also $O(n)$. The overall model is a cascade of those layers, therefore, our sequence-based recommendation model appears a time complexity of $O(n)$, which is linearly correlated with the number of sequences. The overall time complexity of the model is more acceptable than collaborative filtering($O(n^{2})$)\cite{Resnick:1994:GOA:192844.192905,sarwar2001item}, so that big data can be effectively processed.
+In the embedding layer, it has a matrix multiplication operation with time complexity of $O(n)$. In the recurrent structure, for every sequence, the Bi-directional LSTM structure will apply a forward and a backward scan, and based on the citation \cite{Sak2014Long}, the time complexity of the BiLSTM we can know is $O(n)$. The time complexity of the pooling layer and the fully-connected layer is also $O(n)$. The overall model is a cascade of those layers, therefore, our sequence-based recommendation model appears a time complexity of $O(n)$, which is linearly correlated with the number of sequences. The overall time complexity of the model is more acceptable than collaborative filtering($O(n^{2})$)\cite{Resnick:1994:GOA:192844.192905,sarwar2001item}, so that big data can be effectively processed.
 
 
 \section{Experiments}
@@ -225,41 +226,53 @@ sim(u_{i},u_{j})=\cos (\vec{u_{i}},\vec{u_{j}})=\frac{\vec{u_{i}}\cdot \vec{u_{j
 \end{equation}
 
 \item \textbf{UBCF}: User-based Collaborative Filtering which evaluates the similarity between items by different users' ratings on the item, recommending items similar to those items consumed already for user. In UBCF, we also use cosine angle to measure similarity between items.
+
+\item \textbf{LSTM}: We also compared with the basic Long Short Term Memory (LSTM) \cite{Hochreiter:1997:LSTM} model. In the embedding stage, LSTM and BiLSTM4Rec share the same size of the embedding layer. The commonly-used update equations of LSTM are as follows:
+\begin{equation}
+\begin{aligned}
+    i_{t} & =\sigma\big(x_{t}U^{i}+h_{t-1}W^{i}\big)\\
+    f_{t} & =\sigma\big(x_{t}U^{f}+h_{t-1}W^{f}\big)\\
+    o_{t} & =\sigma\big(x_{t}U^{o}+h_{t-1}W^{o}\big)\\
+    C_{t} & =\sigma\big(f_{t}\ast C_{t-1}+i_{t}\ast\tanh\big(x_{t}U^{g}+h_{t-1}W^{g}\big)\big)\\
+    h_{t} & =\tanh(C_{t})\ast o_{t}
+\end{aligned}
+\end{equation}
+Here, we use $i$, $f$, $o$ to denote the $input$, $forget$ and $output$ gates respectively. We also set the units of LSTM as 200.
 % \item \textbf{PMF}: 
 % \item \textbf{Apriori}:
 \end{itemize}
 
 \begin{table}[htbp]
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
 
-\textbf{Metrics} & \textbf{POP}& \textbf{UBCF}& \textbf{IBCF}& \textbf{BiLSTM4Rec} \\
+\textbf{Metrics}& \textbf{POP}& \textbf{UBCF}& \textbf{IBCF}& \textbf{LSTM}& \textbf{BiLSTM4Rec} \\
 \hline
-Precision@1& 0.0056& 0.0108 & 0.0112 & \textbf{0.1135} \\
+Precision@1& 0.0056& 0.0108 & 0.0112 & 0.1135 & \textbf{0.1165} \\
 \hline
-Recall@1& 0.0056& 0.0108 & 0.0112 & \textbf{0.1135}\\
+Recall@1& 0.0056& 0.0108 & 0.0112 & 0.1135 & \textbf{0.1165}\\
 \hline
-F1@1& 0.0056& 0.0108 & 0.0112 & \textbf{0.1135}\\
+F1@1& 0.0056& 0.0108 & 0.0112 & 0.1135 & \textbf{0.1165}\\
 \hline
-Precision@5& 0.00018& \textbf{0.0476} & 0.00626 & 0.0463\\
+Precision@5& 0.00018& 0.0476 & 0.006223 & 0.0463 & \textbf{0.0488}\\
 \hline
-Recall@5& 0.0009& 0.0476 & 0.0313 & \textbf{0.2315}\\
+Recall@5& 0.0009& 0.0476 & 0.0313 & 0.2315 & \textbf{0.244}\\
 \hline
-F1@5& 0.0003& 0.0476 & 0.010433333 & \textbf{0.07716666666666668}\\
+F1@5& 0.0003& 0.0476 & 0.010433333 & 0.077167 & \textbf{0.081333}\\
 \hline
-Precision@20& 0.00015& \textbf{0.1154} & 0.004705 & 0.018425\\
+Precision@20& 0.00015& \textbf{0.1154} & 0.004705 & 0.01825 & 0.01895\\
 \hline
-Recall@20& 0.003& 0.1154 & 0.0941 & \textbf{0.3685}\\
+Recall@20& 0.003& 0.1154 & 0.0941 & 0.365 & \textbf{0.379}\\
 \hline
-F1@20& 0.000285714& \textbf{0.1154} & 0.008961905 & 0.035095238095238096\\
+F1@20& 0.000285714& \textbf{0.1154} & 0.008961905 & 0.034762 & 0.036095\\
 \hline
 \end{tabular}
 \label{tab1}
 \end{center}
 \caption{When the length of recommendation list is 1,5,20 respectively, we compare different approaches using LiveStreaming-10M dataset with Time Windows as 5}
 \end{table}
-Our experiments firstly compare BiLSTM4Rec model with itself in different length of sequence. From the Fig.2 we can conclude that our sequence-based recommendation also can make recommendations for someone even though with a little information about him. Furthermore, from the results (Tab. 1), we can see that the performances of our approach are better than other traditional recommendation baselines on this living broadcast dataset, especially when faced with short-term predictions.
+Our experiments firstly compare BiLSTM4Rec model with itself in different length of sequence. From the Fig.2 we can conclude that our sequence-based recommendation also can make recommendations for someone even though with a little information about him. Furthermore, from the results (Tab. 1), we can see that the performances of our approach are better than other traditional recommendation baselines on this living broadcast dataset, especially when faced with short-term predictions. Our experiments have also demonstrated that LSTM is effective for sequence modeling, and our BiLSTM4Rec model does have a certain improvement over the basic LSTM model in the sequence based recommendation.
 
 \section{Results and Conclusion}
 
@@ -268,7 +281,7 @@ Overall, BiLSTM4Rec is a novel recommendation by modeling recent consumed items 
 In future work, we want to use neural networks to capture other information not only the sequences of data, and to generate a more accurate and longer term prediction.
 
 ~\\
-\textbf{Acknowledgement.} This work was supported by the National Science Foundation of China (No. 61772211, No. 61750110516).
+\textbf{Acknowledgement.} This work was supported by the National Natural Science Foundation of China (No. 61772211, No. 61750110516), and Science and Technology Program of Guangzhou, China (No. 201508010067).
 
 %
 % ---- Bibliography ----

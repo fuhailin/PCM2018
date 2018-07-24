@@ -34,6 +34,11 @@ Covington, P., Adams, J., Sargin, E.: Deep neural networks for youtube
 Hidasi, B., Karatzoglou, A., Baltrunas, L., Tikk, D.: Session-based
   recommendations with recurrent neural networks. Computer Science  (2015)
 
+\bibitem{Hochreiter:1997:LSTM}
+Hochreiter, S., Schmidhuber, J.: Long short-term memory. Neural Comput.
+  \textbf{9}(8),  1735--1780 (Nov 1997). \doi{10.1162/neco.1997.9.8.1735},
+  \url{http://dx.doi.org/10.1162/neco.1997.9.8.1735}
+
 \bibitem{li2008pfp}
 Li, H., Wang, Y., Zhang, D., Zhang, M., Chang, E.Y.: Pfp: parallel fp-growth
   for query recommendation. In: Proceedings of the 2008 ACM conference on
