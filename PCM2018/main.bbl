@@ -3,10 +3,11 @@
 \providecommand{\urlprefix}{URL }
 \providecommand{\doi}[1]{https://doi.org/#1}
 
-\bibitem{Adomavicius2013Toward}
-Adomavicius, G., Tuzhilin, A.: Toward the Next Generation of Recommender
-  Systems: A Survey of the State-of-the-Art and Possible Extensions. Springer
-  International Publishing (2013)
+\bibitem{1423975}
+Adomavicius, G., Tuzhilin, A.: Toward the next generation of recommender
+  systems: a survey of the state-of-the-art and possible extensions. IEEE
+  Trans. Knowl. Data Eng.  \textbf{17}(6),  734--749 (June 2005).
+  \doi{10.1109/TKDE.2005.99}
 
 \bibitem{agrawal1993mining}
 Agrawal, R., Imieli{\'n}ski, T., Swami, A.: Mining association rules between
@@ -30,14 +31,20 @@ Covington, P., Adams, J., Sargin, E.: Deep neural networks for youtube
   recommendations. In: Proceedings of the 10th ACM Conference on Recommender
   Systems. pp. 191--198. ACM (2016)
 
-\bibitem{Hidasi2015Session}
+\bibitem{DBLP:journals/corr/HidasiKBT15}
 Hidasi, B., Karatzoglou, A., Baltrunas, L., Tikk, D.: Session-based
-  recommendations with recurrent neural networks. Computer Science  (2015)
+  recommendations with recurrent neural networks. CoRR  \textbf{abs/1511.06939}
+  (2015), \url{http://arxiv.org/abs/1511.06939}
 
 \bibitem{Hochreiter:1997:LSTM}
 Hochreiter, S., Schmidhuber, J.: Long short-term memory. Neural Comput.
   \textbf{9}(8),  1735--1780 (Nov 1997). \doi{10.1162/neco.1997.9.8.1735},
   \url{http://dx.doi.org/10.1162/neco.1997.9.8.1735}
+
+\bibitem{AAAI159745}
+Lai, S., Xu, L., Liu, K., Zhao, J.: Recurrent convolutional neural networks for
+  text classification (2015),
+  \url{https://aaai.org/ocs/index.php/AAAI/AAAI15/paper/view/9745}
 
 \bibitem{li2008pfp}
 Li, H., Wang, Y., Zhang, D., Zhang, M., Chang, E.Y.: Pfp: parallel fp-growth
