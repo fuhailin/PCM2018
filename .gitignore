@@ -1,2 +1,6 @@
-PCM2018/main.log
-PCM2018/references.bib.bak
+*.bak
+*.log
+*.aux
+*.bbl
+*.gz
+*.blg
